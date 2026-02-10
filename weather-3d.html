@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Weather App - Animated</title>
+    <link rel="stylesheet" href="weather-3d.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Righteous&display=swap" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&libraries=places"></script>
+</head>
+<body>
+    <!-- Dynamic Background -->
+    <div class="background-container">
+        <div class="animated-background"></div>
+        <div class="particles-container" id="particles"></div>
+        <div class="gradient-overlay"></div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cloud-sun-rain"></i>
+                <span>3D Weather</span>
+            </div>
+            <button class="location-btn" id="locationBtn">
+                <i class="fas fa-location-crosshairs"></i>
+                <span>Get Location</span>
+            </button>
+        </header>
+
+        <!-- Search Section -->
+        <div class="search-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="cityInput" placeholder="Search city or location...">
+                <button id="searchBtn">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <button class="map-toggle-btn" id="mapToggleBtn">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Show Map</span>
+            </button>
+        </div>
+
+        <!-- Google Maps Container -->
+        <div class="map-container" id="mapContainer">
+            <div class="map-header">
+                <h3><i class="fas fa-map-marker-alt"></i> Location Map</h3>
+                <button class="map-close-btn" id="mapCloseBtn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="map" class="map"></div>
+            <div class="map-search">
+                <input type="text" id="mapSearchInput" placeholder="Search location on map...">
+                <button id="mapSearchBtn">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Weather Display -->
+        <div class="weather-content" id="weatherContent">
+            <!-- Loading State -->
+            <div class="loading" id="loading">
+                <div class="loader-3d">
+                    <div class="cube">
+                        <div class="face front"></div>
+                        <div class="face back"></div>
+                        <div class="face right"></div>
+                        <div class="face left"></div>
+                        <div class="face top"></div>
+                        <div class="face bottom"></div>
+                    </div>
+                </div>
+                <p>Fetching weather data...</p>
+            </div>
+
+            <!-- Main Weather Card -->
+            <div class="weather-card" id="weatherCard">
+                <!-- Location Info -->
+                <div class="location-info">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h2 id="cityName">City Name</h2>
+                    <p id="country">Country</p>
+                </div>
+
+                <!-- 3D Temperature Display -->
+                <div class="temperature-3d">
+                    <div class="temp-container">
+                        <div class="temp-value" id="temperature">
+                            <span class="temp-number">25</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="temp-shadow"></div>
+                    </div>
+                    <div class="weather-icon-3d" id="weatherIcon">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                </div>
+
+                <!-- Weather Description -->
+                <div class="weather-description">
+                    <h3 id="weatherMain">Clear Sky</h3>
+                    <p id="weatherDesc">Perfect weather today</p>
+                </div>
+
+                <!-- Weather Details Grid -->
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-temperature-high"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Feels Like</p>
+                            <p class="detail-value" id="feelsLike">25°C</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-droplet"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Humidity</p>
+                            <p class="detail-value" id="humidity">60%</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Wind Speed</p>
+                            <p class="detail-value" id="windSpeed">10 km/h</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-gauge-high"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Pressure</p>
+                            <p class="detail-value" id="pressure">1013 hPa</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Visibility</p>
+                            <p class="detail-value" id="visibility">10 km</p>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <i class="fas fa-cloud"></i>
+                        </div>
+                        <div class="detail-info">
+                            <p class="detail-label">Cloudiness</p>
+                            <p class="detail-value" id="cloudiness">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sun Times -->
+                <div class="sun-times">
+                    <div class="sun-time">
+                        <i class="fas fa-sunrise"></i>
+                        <div>
+                            <p class="sun-label">Sunrise</p>
+                            <p class="sun-value" id="sunrise">06:00 AM</p>
+                        </div>
+                    </div>
+                    <div class="sun-time">
+                        <i class="fas fa-sunset"></i>
+                        <div>
+                            <p class="sun-label">Sunset</p>
+                            <p class="sun-value" id="sunset">06:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by OpenWeatherMap API</p>
+            <p class="timestamp" id="timestamp"></p>
+        </footer>
+    </div>
+
+    <script src="weather-3d.js"></script>
+</body>
+</html>
